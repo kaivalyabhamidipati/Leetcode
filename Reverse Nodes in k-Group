@@ -1,0 +1,41 @@
+from typing import Optional
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+class Solution:
+    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        # Helper function to reverse k nodes
+        def reverse(start, end):
+            prev = end
+            while start != end:
+                temp = start.next
+                start.next = prev
+                prev = start
+                start = temp
+            return prev
+
+        # Count the number of nodes
+        count = 0
+        node = head
+        while node:
+            count += 1
+            node = node.next
+
+        dummy = ListNode(0)
+        dummy.next = head
+        prev = dummy
+        while count >= k:
+            curr = prev.next
+            nex = curr
+            for _ in range(k):  # Move nex k steps forward
+                nex = nex.next
+
+            # Reverse k nodes from curr to nex
+            prev.next = reverse(curr, nex)
+            prev = curr
+            count -= k
+
+        return dummy.next
