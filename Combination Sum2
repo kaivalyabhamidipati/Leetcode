@@ -1,0 +1,28 @@
+class Solution(object):
+    def combinationSum2(self, candidates, target):
+
+        result = []
+        path = []
+        candidates.sort()
+
+        def run(idx, current_sum):
+            if current_sum == target:
+                result.append(path[:])
+                return
+
+            if current_sum > target or idx >= len(candidates):
+                return 
+
+            # INCLUDE current element
+            path.append(candidates[idx])
+            run(idx + 1, current_sum + candidates[idx])
+            path.pop()
+
+            # EXCLUDE current element: skip all its duplicates
+            j = idx + 1
+            while j < len(candidates) and candidates[j] == candidates[idx]:
+                j += 1
+            run(j, current_sum)
+
+        run(0, 0)
+        return result
