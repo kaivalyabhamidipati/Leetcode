@@ -1,0 +1,19 @@
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        if len(nums) == 1:
+            return [nums]
+        
+        permutations = []
+        already_done = set()
+        for num in nums:
+            if num in already_done:
+                continue
+            new_lst = nums.copy()
+            new_lst.remove(num)
+            permutes = self.permuteUnique(new_lst)
+            for perm in permutes:
+                temp_lst = [num]
+                temp_lst.extend(perm)
+                permutations.append(temp_lst)
+            already_done.add(num)
+        return permutations        
