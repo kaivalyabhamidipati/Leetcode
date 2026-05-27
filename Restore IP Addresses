@@ -1,0 +1,33 @@
+class Solution:
+    def restoreIpAddresses(self, s: str):
+        res = []
+
+        def backtrack(start, path):
+            # If we already have 4 parts
+            if len(path) == 4:
+                # Use all digits → valid IP
+                if start == len(s):
+                    res.append(".".join(path))
+                return
+
+            # Try parts of length 1 to 3
+            for length in range(1, 4):
+                if start + length > len(s):
+                    return
+
+                part = s[start:start + length]
+
+                # Leading zero check
+                if part[0] == '0' and length > 1:
+                    return
+
+                # Range check
+                if int(part) > 255:
+                    return
+
+                backtrack(start + length, path + [part])
+
+        backtrack(0, [])
+        return res
+
+        
